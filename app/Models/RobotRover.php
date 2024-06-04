@@ -40,24 +40,17 @@ class RobotRover extends Model
         $this->yCoordinate = $attributes['yCoordinate'] ?? 0;
     }
 
-    public function calcNextStep(string $turnTo, bool $shouldMove)
+    public function calcNextStep(string $turnTo = '', bool $shouldMove = false, int $step = 1)
     {
-        if (!$this->checkTurnToValue($turnTo))
+        if ($turnTo)
         {
-            throw new InvalidTurnToException("The turn-to direction is invalid.");
+            $this->currentDirection = self::DIRECTION_TRANSFORMER[$this->currentDirection][$turnTo];
         }
-
-        $nextDirection = self::DIRECTION_TRANSFORMER[$this->currentDirection][$turnTo];
 
         if ($shouldMove)
         {
-            $next = ('moveTo' . $nextDirection)();
-
-
-        }
-        else
-        {
-            $this->currentDirection = $nextDirection;
+            $moveHandler = 'moveTo' . $this->currentDirection;
+            $this->$moveHandler($step);
         }
     }
 

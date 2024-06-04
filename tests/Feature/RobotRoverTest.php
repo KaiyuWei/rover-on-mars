@@ -49,4 +49,45 @@ class RobotRoverTest extends TestCase
         $robot->moveToE();
         $this->assertEquals(10, $robot->getXCoordinate());
     }
+
+    public function test_calc_next_step()
+    {
+        $plateau = new Plateau(['sizeX' => 3, 'sizeY' => 3]);
+
+        $robot = new RobotRover([
+            'plateau' => $plateau,
+        ]);
+
+        $robot->calcNextStep('R', true);
+        $this->assertEquals(1, $robot->getXCoordinate());
+        $this->assertEquals(0, $robot->getYCoordinate());
+        $this->assertEquals('E', $robot->getDirection());
+
+        $robot->calcNextStep('L', false);
+        $this->assertEquals(1, $robot->getXCoordinate());
+        $this->assertEquals(0, $robot->getYCoordinate());
+        $this->assertEquals('N', $robot->getDirection());
+
+        $robot->calcNextStep('', true);
+        $this->assertEquals(1, $robot->getXCoordinate());
+        $this->assertEquals(1, $robot->getYCoordinate());
+        $this->assertEquals('N', $robot->getDirection());
+
+        $robot->calcNextStep('', true, 5);
+        $this->assertEquals(1, $robot->getXCoordinate());
+        $this->assertEquals(3, $robot->getYCoordinate());
+        $this->assertEquals('N', $robot->getDirection());
+
+        $robot->calcNextStep('R', true, 5);
+        $this->assertEquals(3, $robot->getXCoordinate());
+        $this->assertEquals(3, $robot->getYCoordinate());
+        $this->assertEquals('E', $robot->getDirection());
+
+        $robot->calcNextStep('L', false);
+        $robot->calcNextStep('L', false);
+        $robot->calcNextStep('', true, 5);
+        $this->assertEquals(0, $robot->getXCoordinate());
+        $this->assertEquals(3, $robot->getYCoordinate());
+        $this->assertEquals('W', $robot->getDirection());
+    }
 }
