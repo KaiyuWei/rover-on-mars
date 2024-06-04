@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class InvalidTurnToException extends Exception
+class UnrecognizedInstruction extends Exception
 {
     public const ERROR_CODE = 1;
 }

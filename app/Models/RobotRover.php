@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Exceptions\InvalidTurnToException;
+use App\Exceptions\UnrecognizedInstruction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -40,7 +40,7 @@ class RobotRover extends Model
         $this->yCoordinate = $attributes['yCoordinate'] ?? 0;
     }
 
-    public function calcNextStep(string $turnTo = '', bool $shouldMove = false, int $step = 1)
+    public function calcNextStep(string $turnTo = '', bool $shouldMove = false, int $step = 1): void
     {
         if ($turnTo)
         {
@@ -51,6 +51,26 @@ class RobotRover extends Model
         {
             $moveHandler = 'moveTo' . $this->currentDirection;
             $this->$moveHandler($step);
+        }
+    }
+
+    public function moveByInstruction(array $instructions): void
+    {
+        foreach($instructions as $instruction)
+        {
+            if (in_array($instruction, self::TURN_TO_ENUM))
+            {
+                $this->currentDirection = self::DIRECTION_TRANSFORMER[$this->currentDirection][$instruction];
+            }
+            elseif ($instruction === 'M')
+            {
+                $moveHandler = 'moveTo' . $this->currentDirection;
+                $this->$moveHandler();
+            }
+            else
+            {
+                throw new UnrecognizedInstruction(sprintf('The instruction "%s" cannot be recognized', $instruction));
+            }
         }
     }
 

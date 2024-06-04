@@ -90,4 +90,53 @@ class RobotRoverTest extends TestCase
         $this->assertEquals(3, $robot->getYCoordinate());
         $this->assertEquals('W', $robot->getDirection());
     }
+
+    public function test_go_by_instruction()
+    {
+        $plateau = new Plateau(['sizeX' => 10, 'sizeY' => 10]);
+
+        $robot = new RobotRover([
+            'plateau' => $plateau,
+            'currentDirection' => 'N',
+            'xCoordinate' => 4,
+            'yCoordinate' => 4
+        ]);
+
+        $instructions = ['M', 'M', 'L', 'M', 'R', 'R', 'M'];
+
+        $robot->moveByInstruction($instructions);
+
+        $this->assertEquals('E', $robot->getDirection());
+        $this->assertEquals(4, $robot->getXCoordinate());
+        $this->assertEquals(6, $robot->getYCoordinate());
+
+        // assert the robot does not cross the border of the plateau
+        $robot = new RobotRover([
+            'plateau' => $plateau,
+            'currentDirection' => 'E',
+            'xCoordinate' => 9,
+            'yCoordinate' => 9
+        ]);
+        $instructions = ['M', 'M', 'M'];
+
+        $robot->moveByInstruction($instructions);
+
+        $this->assertEquals('E', $robot->getDirection());
+        $this->assertEquals(10, $robot->getXCoordinate());
+        $this->assertEquals(9, $robot->getYCoordinate());
+
+        // assert the robot does not cross the border of the plateau
+        $robot = new RobotRover([
+            'plateau' => $plateau,
+            'currentDirection' => 'E',
+            'xCoordinate' => 1,
+            'yCoordinate' => 1
+        ]);
+        $instructions = ['L', 'L', 'M', 'M', 'M', 'L'];
+
+        $robot->moveByInstruction($instructions);
+        $this->assertEquals('S', $robot->getDirection());
+        $this->assertEquals(0, $robot->getXCoordinate());
+        $this->assertEquals(1, $robot->getYCoordinate());
+    }
 }
