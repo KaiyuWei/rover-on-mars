@@ -21,9 +21,24 @@ class RobotRover extends Model
 
     public function __construct(
         protected string $currentDirection,
-        protected array $currentCoordinate
+        protected int $xCoordinate,
+        protected int $yCoordinate
     )
     {}
+
+    public function calcNextStep(string $turnTo, bool $shouldMove): void
+    {
+        if (!$this->checkTurnToValue($turnTo))
+        {
+            throw new InvalidTurnToException("The turn-to direction is invalid.");
+        }
+
+//        switch($this->currentDirection)
+//        {
+//            case 'N':
+//
+//        }
+    }
 
     private function checkTurnToValue(string $input): bool
     {
@@ -33,5 +48,25 @@ class RobotRover extends Model
     private function checkDirectionValue(string $input): bool
     {
         return in_array($input, static::DIRECTION_ENUM);
+    }
+
+    private function moveToN()
+    {
+        $this->yCoordinate++;
+    }
+
+    private function moveToS()
+    {
+        $this->yCoordinate--;
+    }
+
+    private function moveToW()
+    {
+        $this->xCoordinate--;
+    }
+
+    private function moveToE()
+    {
+        $this->xCoordinate++;
     }
 }
