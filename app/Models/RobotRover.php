@@ -20,11 +20,14 @@ class RobotRover extends Model
     ];
 
     public function __construct(
+        protected Plateau $plateau,
         protected string $currentDirection,
         protected int $xCoordinate,
         protected int $yCoordinate
     )
-    {}
+    {
+        parent::__construct([]);
+    }
 
     public function calcNextStep(string $turnTo, bool $shouldMove): void
     {
