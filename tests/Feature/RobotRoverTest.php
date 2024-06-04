@@ -104,7 +104,7 @@ class RobotRoverTest extends TestCase
 
         $instructions = ['M', 'M', 'L', 'M', 'R', 'R', 'M'];
 
-        $robot->moveByInstruction($instructions);
+        $robot->moveByInstructions($instructions);
 
         $this->assertEquals('E', $robot->getDirection());
         $this->assertEquals(4, $robot->getXCoordinate());
@@ -119,7 +119,7 @@ class RobotRoverTest extends TestCase
         ]);
         $instructions = ['M', 'M', 'M'];
 
-        $robot->moveByInstruction($instructions);
+        $robot->moveByInstructions($instructions);
 
         $this->assertEquals('E', $robot->getDirection());
         $this->assertEquals(10, $robot->getXCoordinate());
@@ -134,9 +134,20 @@ class RobotRoverTest extends TestCase
         ]);
         $instructions = ['L', 'L', 'M', 'M', 'M', 'L'];
 
-        $robot->moveByInstruction($instructions);
+        $robot->moveByInstructions($instructions);
         $this->assertEquals('S', $robot->getDirection());
         $this->assertEquals(0, $robot->getXCoordinate());
         $this->assertEquals(1, $robot->getYCoordinate());
+    }
+
+    public function test_output_status()
+    {
+        $robot = new RobotRover([
+            'currentDirection' => 'E',
+            'xCoordinate' => 1,
+            'yCoordinate' => 2
+        ]);
+
+        $this->assertEquals("1 2 E", $robot->outputStatus());
     }
 }

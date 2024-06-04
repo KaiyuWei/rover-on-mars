@@ -34,7 +34,7 @@ class RobotRover extends Model
     {
         parent::__construct($attributes);
 
-        $this->plateau = $attributes['plateau'] ?? null;
+        $this->plateau = $attributes['plateau'] ?? new Plateau(['sizeX' => (int)INF, 'sizeY' => (int)INF]);
         $this->currentDirection = $attributes['currentDirection'] ?? 'N';
         $this->xCoordinate = $attributes['xCoordinate'] ?? 0;
         $this->yCoordinate = $attributes['yCoordinate'] ?? 0;
@@ -54,7 +54,7 @@ class RobotRover extends Model
         }
     }
 
-    public function moveByInstruction(array $instructions): void
+    public function moveByInstructions(array $instructions): void
     {
         foreach($instructions as $instruction)
         {
@@ -141,4 +141,10 @@ class RobotRover extends Model
     public function getDirection(): string{
         return $this->currentDirection;
     }
+
+    public function outputStatus(): string
+    {
+        return sprintf('%s %s %s', (string)$this->xCoordinate, (string)$this->yCoordinate, $this->currentDirection);
+    }
+
 }
