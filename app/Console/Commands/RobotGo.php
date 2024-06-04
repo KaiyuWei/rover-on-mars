@@ -54,14 +54,11 @@ class RobotGo extends Command
         // create robot instances
         foreach ($inputArray['robots'] as $instruction)
         {
-            $this->info(json_encode($instruction));
-
-            $robot = new RobotRover($instruction['initial']);
+            $robot = new RobotRover(array_merge($instruction['initial'], ['plateau' => $plateau]));
             try
             {
                 $robot->moveByInstructions($instruction['movement']);
                 $finalStatuses[] = $robot->outputStatus();
-                $this->info($robot->outputStatus());
             } catch (UnrecognizedInstruction $e) {
                 $this->error($e->getMessage());
             }
