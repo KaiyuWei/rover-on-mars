@@ -13,63 +13,80 @@ class RobotRover extends Model
     const TURN_TO_ENUM = ['L', 'R'];
 
     const DIRECTION_TRANSFORMER = [
-        ['N' => ['L' => 'W', 'R' => 'E']],
-        ['W' => ['L' => 'S', 'R' => 'N']],
-        ['S' => ['L' => 'E', 'R' => 'W']],
-        ['E' => ['L' => 'N', 'R' => 'S']]
+        'N' => ['L' => 'W', 'R' => 'E'],
+        'W' => ['L' => 'S', 'R' => 'N'],
+        'S' => ['L' => 'E', 'R' => 'W'],
+        'E' => ['L' => 'N', 'R' => 'S']
     ];
 
-    public function __construct(
-        protected Plateau $plateau,
-        protected string $currentDirection,
-        protected int $xCoordinate,
-        protected int $yCoordinate
-    )
+    protected ?Plateau $plateau;
+
+    protected string $currentDirection;
+
+    protected int $xCoordinate;
+
+    protected int $yCoordinate;
+
+    protected $fillable = ['plateau', 'currentDirection', 'xCoordinate', 'yCoordinate'];
+
+    public function __construct(protected $attributes = [])
     {
-        parent::__construct([]);
+        parent::__construct($attributes);
+
+        $this->plateau = $attributes['plateau'] ?? null;
+        $this->currentDirection = $attributes['currentDirection'] ?? 'N';
+        $this->xCoordinate = $attributes['xCoordinate'] ?? 0;
+        $this->yCoordinate = $attributes['yCoordinate'] ?? 0;
     }
 
-    public function calcNextStep(string $turnTo, bool $shouldMove): void
+    public function calcNextStep(string $turnTo, bool $shouldMove)
     {
         if (!$this->checkTurnToValue($turnTo))
         {
             throw new InvalidTurnToException("The turn-to direction is invalid.");
         }
 
-//        switch($this->currentDirection)
-//        {
-//            case 'N':
-//
-//        }
+        $nextDirection = self::DIRECTION_TRANSFORMER[$this->currentDirection][$turnTo];
+
+        if ($shouldMove)
+        {
+            $next = ('moveTo' . $nextDirection)();
+
+
+        }
+        else
+        {
+            $this->currentDirection = $nextDirection;
+        }
     }
 
     private function checkTurnToValue(string $input): bool
     {
-        return in_array($input, static::TURN_TO_ENUM);
+        return in_array($input, self::TURN_TO_ENUM);
     }
 
     private function checkDirectionValue(string $input): bool
     {
-        return in_array($input, static::DIRECTION_ENUM);
+        return in_array($input, self::DIRECTION_ENUM);
     }
 
-    private function moveToN()
+    private function moveToN(): array
     {
-        $this->yCoordinate++;
+        return ['axis' => 'Y', 'value' => $this->yCoordinate + 1];
     }
 
-    private function moveToS()
+    private function moveToS(): array
     {
-        $this->yCoordinate--;
+        return ['axis' => 'Y', 'value' => $this->yCoordinate - 1];
     }
 
-    private function moveToW()
+    private function moveToW(): array
     {
-        $this->xCoordinate--;
+        return ['axis' => 'X', 'value' => $this->xCoordinate - 1];
     }
 
-    private function moveToE()
+    private function moveToE(): array
     {
-        $this->xCoordinate++;
+        return ['axis' => 'X', 'value' => $this->xCoordinate + 1];
     }
 }

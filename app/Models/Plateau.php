@@ -9,16 +9,24 @@ class Plateau extends Model
 {
     use HasFactory;
 
-    public function __construct(
-        protected int $sizeX,
-        protected int $sizeY
-    )
+    protected int $sizeX;
+
+    protected int $sizeY;
+
+    protected $fillable= ['sizeX', 'sizeY'];
+
+    public function __construct(protected $attributes = [])
     {
-        parent::__construct([]);
+        parent::__construct($attributes);
+
+        $this->sizeX = $attributes['sizeX'] ?? 0;
+        $this->sizeY = $attributes['sizeY'] ?? 0;
     }
 
-    public function ifWithinBorder(int $xCoordinate, int $yCoordinate): bool
+    public function ifWithinBorder(string $axis, int $Coordinate): bool
     {
-        return ($xCoordinate <= $this->sizeX) && ($yCoordinate <= $this->sizeY);
+        $axis = strtoupper($axis);
+        $property = 'size' . $axis;
+        return ($Coordinate <= $this->$property) && ($Coordinate >= 0);
     }
 }
