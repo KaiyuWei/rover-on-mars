@@ -2,7 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\UnrecognizedInstruction;
+use App\Models\Plateau;
+use App\Models\RobotRover;
 use Illuminate\Console\Command;
+use App\Services\InputInstructionParser;
 
 class RobotGo extends Command
 {
@@ -11,7 +15,7 @@ class RobotGo extends Command
      *
      * @var string
      */
-    protected $signature = 'robot:go';
+    protected $signature = 'robot:go {--file=} {--string=}';
 
     /**
      * The console command description.
@@ -25,6 +29,45 @@ class RobotGo extends Command
      */
     public function handle()
     {
-        //
+        $inputString = '';
+        if ($this->option('file'))
+        {
+            $inputFilePath = $this->option('file');
+            $inputString = file_get_contents($inputFilePath);
+        }
+        elseif($this->option('string'))
+        {
+            $inputString = $this->option('string');
+        }
+        else
+        {
+            $this->warn('Missing input!');
+            return;
+        }
+
+        $inputArray = InputInstructionParser::parseMarsRoverInput($inputString);
+
+        $plateau = new Plateau($inputArray['plateau']);
+
+        $finalStatuses = [];
+
+        // create robot instances
+        foreach ($inputArray['robots'] as $instruction)
+        {
+            $this->info(json_encode($instruction));
+
+            $robot = new RobotRover($instruction['initial']);
+            try
+            {
+                $robot->moveByInstructions($instruction['movement']);
+                $finalStatuses[] = $robot->outputStatus();
+                $this->info($robot->outputStatus());
+            } catch (UnrecognizedInstruction $e) {
+                $this->error($e->getMessage());
+            }
+        }
+
+        $outputString = implode(PHP_EOL, $finalStatuses);
+        $this->info($outputString);
     }
 }

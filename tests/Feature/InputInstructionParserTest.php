@@ -18,14 +18,14 @@ class InputInstructionParserTest extends TestCase
         MMRMMRMRRM";
 
         $expectedOutput = [
-            'plateau' => ['x' => 5, 'y' => 5],
+            'plateau' => ['sizeX' => 5, 'sizeY' => 5],
             'robots' => [
                 [
-                    'initial position' => ['x' => 1, 'y' => 2, 'direction' => 'N'],
+                    'initial' => ['xCoordinate' => 1, 'yCoordinate' => 2, 'currentDirection' => 'N'],
                     'movement' => ['L', 'M', 'L', 'M', 'L', 'M', 'L', 'M', 'M']
                 ],
                 [
-                    'initial position' => ['x' => 3, 'y' => 3, 'direction' => 'E'],
+                    'initial' => ['xCoordinate' => 3, 'yCoordinate' => 3, 'currentDirection' => 'E'],
                     'movement' => ['M', 'M', 'R', 'M', 'M', 'R', 'M', 'R', 'R', 'M']
                 ]
             ]

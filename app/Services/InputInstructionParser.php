@@ -4,9 +4,10 @@ namespace App\Services;
 
 class InputInstructionParser
 {
-    static public function parseMarsRoverInput($input): array
+    static public function parseMarsRoverInput(string $input): array
     {
-        $lines = explode("\n", $input);
+        $lines = trim($input);
+        $lines = explode("\n", $lines);
         $lines = array_map('trim', $lines);
 
         $result = [];
@@ -15,8 +16,8 @@ class InputInstructionParser
         $plateauSize = explode(' ', array_shift($lines));
 
         $result['plateau'] = [
-            'x' => (int)$plateauSize[0],
-            'y' => (int)$plateauSize[1]
+            'sizeX' => (int)$plateauSize[0],
+            'sizeY' => (int)$plateauSize[1]
         ];
 
         // process each robot's information
@@ -27,9 +28,9 @@ class InputInstructionParser
                 $position = explode(' ', $lines[$i]);
 
                 $initialPosition = [
-                    'x' => (int)$position[0],
-                    'y' => (int)$position[1],
-                    'direction' => $position[2]
+                    'xCoordinate' => (int)$position[0],
+                    'yCoordinate' => (int)$position[1],
+                    'currentDirection' => $position[2]
                 ];
 
                 // get the movement instructions
@@ -37,7 +38,7 @@ class InputInstructionParser
 
                 // Add the rover information to the result array
                 $result['robots'][] = [
-                    'initial position' => $initialPosition,
+                    'initial' => $initialPosition,
                     'movement' => $movements
                 ];
             }
