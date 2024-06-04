@@ -29,4 +29,14 @@ class Plateau extends Model
         $property = 'size' . $axis;
         return ($Coordinate <= $this->$property) && ($Coordinate >= 0);
     }
+
+    public function getXLength(): int
+    {
+        return $this->sizeX;
+    }
+
+    public function getYLength(): int
+    {
+        return $this->sizeY;
+    }
 }

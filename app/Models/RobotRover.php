@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Exceptions\InvalidTurnToException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class RobotRover extends Model
 {
@@ -70,35 +71,61 @@ class RobotRover extends Model
         return in_array($input, self::DIRECTION_ENUM);
     }
 
-    private function moveToN(): void
+    public function moveToN(int $step = 1): void
     {
-        if ($this->plateau->ifWithinBorder('Y', $this->yCoordinate + 1))
+        if ($this->plateau->ifWithinBorder('Y', $this->yCoordinate + $step))
         {
-            $this->yCoordinate++;
+            $this->yCoordinate += $step;
+        }
+        else {
+            $this->yCoordinate = $this->plateau->getYLength();
         }
     }
 
-    private function moveToS(): void
+    public function moveToS(int $step = 1): void
     {
-        if ($this->plateau->ifWithinBorder('Y', $this->yCoordinate - 1))
+        if ($this->plateau->ifWithinBorder('Y', $this->yCoordinate - $step))
         {
-            $this->yCoordinate--;
+            $this->yCoordinate -= $step;
+        }
+        else {
+            $this->yCoordinate = 0;
         }
     }
 
-    private function moveToW(): void
+    public function moveToW(int $step = 1): void
     {
-        if ($this->plateau->ifWithinBorder('X', $this->xCoordinate - 1))
+        if ($this->plateau->ifWithinBorder('X', $this->xCoordinate - $step))
         {
-            $this->xCoordinate--;
+            $this->xCoordinate -= $step;
+        }
+        else {
+            $this->xCoordinate = 0;
         }
     }
 
-    private function moveToE(): void
+    public function moveToE(int $step = 1): void
     {
-        if ($this->plateau->ifWithinBorder('X', $this->xCoordinate + 1))
+        if ($this->plateau->ifWithinBorder('X', $this->xCoordinate + $step))
         {
-            $this->xCoordinate++;
+            $this->xCoordinate += $step;
         }
+        else {
+            $this->xCoordinate = $this->plateau->getXLength();
+        }
+    }
+
+    public function getXCoordinate(): int
+    {
+        return $this->xCoordinate;
+    }
+
+    public function getYCoordinate(): int
+    {
+        return $this->yCoordinate;
+    }
+
+    public function getDirection(): string{
+        return $this->currentDirection;
     }
 }
