@@ -70,23 +70,35 @@ class RobotRover extends Model
         return in_array($input, self::DIRECTION_ENUM);
     }
 
-    private function moveToN(): array
+    private function moveToN(): void
     {
-        return ['axis' => 'Y', 'value' => $this->yCoordinate + 1];
+        if ($this->plateau->ifWithinBorder('Y', $this->yCoordinate + 1))
+        {
+            $this->yCoordinate++;
+        }
     }
 
-    private function moveToS(): array
+    private function moveToS(): void
     {
-        return ['axis' => 'Y', 'value' => $this->yCoordinate - 1];
+        if ($this->plateau->ifWithinBorder('Y', $this->yCoordinate - 1))
+        {
+            $this->yCoordinate--;
+        }
     }
 
-    private function moveToW(): array
+    private function moveToW(): void
     {
-        return ['axis' => 'X', 'value' => $this->xCoordinate - 1];
+        if ($this->plateau->ifWithinBorder('X', $this->xCoordinate - 1))
+        {
+            $this->xCoordinate--;
+        }
     }
 
-    private function moveToE(): array
+    private function moveToE(): void
     {
-        return ['axis' => 'X', 'value' => $this->xCoordinate + 1];
+        if ($this->plateau->ifWithinBorder('X', $this->xCoordinate + 1))
+        {
+            $this->xCoordinate++;
+        }
     }
 }
