@@ -41,8 +41,9 @@ class RobotGo extends Command
         }
         else
         {
-            $this->warn('Missing input!');
-            return;
+            // use the default file path
+            $inputFilePath = env('DEFAULT_INPUT_FILE_PATH');
+            $inputString = file_get_contents($inputFilePath);
         }
 
         $inputArray = InputInstructionParser::parseMarsRoverInput($inputString);
