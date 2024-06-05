@@ -40,6 +40,7 @@ Each line of the output is coordinates and heading direction of a robot you give
 
 ### Error handling
 If there's any error or non-standard input for a robot, an error message pops up and the instruction line of the robot is skipped.
+
 The robot never move cross the border of the plateau for safety reasons. If the instruction try to make the robot move out of the plateau border, the robot will just stop there without moving. E.g. If you give 'M' instruction to a robot '1 1 N' in a plateau of size '1 1', the robot will keep the status '1 1 N'.
 
 ### Example input
