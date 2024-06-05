@@ -44,7 +44,7 @@ If there's any error or non-standard input for a robot, an error message pops up
 The robot never move cross the border of the plateau for safety reasons. If the instruction try to make the robot move out of the plateau border, the robot will just stop there without moving. E.g. If you give 'M' instruction to a robot '1 1 N' in a plateau of size '1 1', the robot will keep the status '1 1 N'.
 
 ### Example input
-There are already some input lines in the default input file (one of the instruction line is problematic). If you run 'php artisan robot:go' in the container, the output will display as:
+There are already some input lines in the default input file (one of the instruction line has an non-standard instruction 'H', another two lines instructs their robots to move out of the border). If you run 'php artisan robot:go' in the container, the output will display as:
 ```angular2html
 Error: The instruction "H" cannot be recognized
 1 3 N
