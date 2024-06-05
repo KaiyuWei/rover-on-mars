@@ -15,7 +15,7 @@ class RobotGo extends Command
      *
      * @var string
      */
-    protected $signature = 'robot:go {--file=} {--string=}';
+    protected $signature = 'robot:go {--file=}';
 
     /**
      * The console command description.
@@ -34,10 +34,6 @@ class RobotGo extends Command
         {
             $inputFilePath = $this->option('file');
             $inputString = file_get_contents($inputFilePath);
-        }
-        elseif($this->option('string'))
-        {
-            $inputString = $this->option('string');
         }
         else
         {
