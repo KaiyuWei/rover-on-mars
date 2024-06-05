@@ -26,4 +26,14 @@ The rest of the input is information pertaining to the rovers that have been dep
 The position is made up of two integers and a letter separated by spaces, corresponding to the x and y coordinates and the rover's orientation.
 
 ### Input source
-The default input file is 
+The default input file is in the root folder of the app, named "inputFile" by default. You can also give the customized file path by adding an option `--file=[filePath]` when you run the command.
+
+In the container shell, you can create, edit the input file to give different instructions to the robots.
+
+### Output
+The output of the command is a multi-line string displayed in the tty:
+```angular2html
+1 3 N
+5 1 E
+```
+Each line of the output is coordinates and heading direction of a robot you give in the input file. If there's any error or non-standard input for a robot, the result of it is not displayed in the result.
