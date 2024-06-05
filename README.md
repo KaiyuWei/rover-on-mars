@@ -9,7 +9,7 @@ Start the app using Docker by following steps:
 
 ## How To Use
 ### Run the command
-Run the command `php artisan robot:go [options]` to get the final locations of the robots you input
+Run the command `php artisan robot:go` to get the final locations of the robots you input
 ### Input format
 The input should be a multi-line string like:
 ```angular2html
